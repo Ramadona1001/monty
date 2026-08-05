@@ -17,6 +17,8 @@ class BranchSeeder extends Seeder
                     'ar' => 'خدمة العملاء',
                 ],
                 'phone' => '0564175052',
+                'email' => 'montey.info@gmail.com',
+                'whatsapp' => '966564175052',
                 'address' => [
                     'en' => '',
                     'ar' => '',
@@ -30,6 +32,8 @@ class BranchSeeder extends Seeder
                     'ar' => 'فرع الدمام',
                 ],
                 'phone' => '0138300600 - 0138300655',
+                'email' => null,
+                'whatsapp' => null,
                 'address' => [
                     'en' => 'Next to Al-Dawaa Pharmacy - King Abdul Aziz Street - Dammam',
                     'ar' => 'بجوار صيدليه الدواء - شارع الملك عبد العزيز - الدمام',
@@ -43,6 +47,8 @@ class BranchSeeder extends Seeder
                     'ar' => 'فرع الاحساء',
                 ],
                 'phone' => '0135846015 – 0135846016',
+                'email' => null,
+                'whatsapp' => null,
                 'address' => [
                     'en' => 'Al-Ahsa Branch - Al-Jafer Road',
                     'ar' => 'فرع الاحساء - طريق الجفر',

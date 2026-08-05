@@ -36,7 +36,7 @@
                                 </div>
                                 <div class="icon__box__content">
                                     <h6>{{ $branch->getTranslation('name', $locale) }}</h6>
-                                    <p>{{ $branch->phone }}</p>
+                                    @include('partials.branch-contact', ['branch' => $branch])
                                 </div>
                             </div>
                         @endforeach

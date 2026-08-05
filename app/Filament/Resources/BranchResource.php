@@ -24,6 +24,8 @@ class BranchResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
+    protected static ?string $navigationLabel = 'Branches';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -32,9 +34,6 @@ class BranchResource extends Resource
                     ->schema([
                         IconSelect::solid()
                             ->default('fa-solid fa-code-branch'),
-                        Forms\Components\TextInput::make('phone')
-                            ->tel()
-                            ->required(),
                         Forms\Components\TextInput::make('sort_order')
                             ->numeric()
                             ->default(0)
@@ -44,11 +43,28 @@ class BranchResource extends Resource
                             ->default(true)
                             ->inline(false),
                     ])
-                    ->columns(2),
+                    ->columns(3),
+
+                Forms\Components\Section::make('Contact information')
+                    ->description('Independent contact details for this branch on the website.')
+                    ->schema([
+                        Forms\Components\TextInput::make('phone')
+                            ->tel()
+                            ->placeholder('0564175052'),
+                        Forms\Components\TextInput::make('email')
+                            ->email()
+                            ->placeholder('branch@example.com'),
+                        Forms\Components\TextInput::make('whatsapp')
+                            ->tel()
+                            ->label('WhatsApp')
+                            ->placeholder('966564175052')
+                            ->helperText('Numbers only, with country code.'),
+                    ])
+                    ->columns(3),
 
                 LocaleFields::tabs(fn (string $locale) => [
                     LocaleFields::text('name', 'Branch name', $locale),
-                    LocaleFields::textarea('address', 'Footer address', $locale, 3),
+                    LocaleFields::textarea('address', 'Address', $locale, 3),
                 ], 'Branch text'),
             ]);
     }
@@ -57,14 +73,13 @@ class BranchResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('icon')
-                    ->html()
-                    ->formatStateUsing(fn (?string $state) => IconSelect::tableHtml($state)),
+                Tables\Columns\TextColumn::make('sort_order')->sortable(),
                 Tables\Columns\TextColumn::make('name')
                     ->formatStateUsing(fn (Branch $record) => $record->getTranslation('name', 'en')),
                 Tables\Columns\TextColumn::make('phone'),
+                Tables\Columns\TextColumn::make('email'),
+                Tables\Columns\TextColumn::make('whatsapp'),
                 Tables\Columns\IconColumn::make('is_active')->boolean(),
-                Tables\Columns\TextColumn::make('sort_order')->sortable(),
             ])
             ->defaultSort('sort_order')
             ->reorderable('sort_order')

@@ -33,7 +33,7 @@ class FrontendContentService
                 ->where('is_active', true)
                 ->orderBy('sort_order')
                 ->get()
-                ->filter(fn (Branch $branch) => filled($branch->getTranslation('address', app()->getLocale(), false)));
+                ->filter(fn (Branch $branch) => $branch->hasContactInfo(app()->getLocale()));
         });
     }
 

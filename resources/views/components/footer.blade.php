@@ -7,12 +7,13 @@
             </div>
             <div class="col">
                 <h3 class="main__heading normal text-white">{{ __('site.footer.address_heading') }}</h3>
-                <ul>
+                <ul class="list-unstyled footer-branches">
                     @foreach($footerBranches as $branch)
-                        <li><i class="fa-solid fa-location-dot"></i> {{ $branch->getTranslation('address', $locale) }}</li>
+                        <li class="mb-3">
+                            <strong class="text-white d-block mb-1">{{ $branch->getTranslation('name', $locale) }}</strong>
+                            @include('partials.branch-contact', ['branch' => $branch])
+                        </li>
                     @endforeach
-                    <li><i class="fa-solid fa-phone"></i> {{ $settings->phone }}</li>
-                    <li><i class="fa-solid fa-envelope"></i> {{ $settings->email }}</li>
                 </ul>
             </div>
         </div>
