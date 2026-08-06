@@ -20,6 +20,8 @@ class HomeController extends Controller
             'services' => $this->content->featuredServices(),
             'whyUs' => $this->content->whyUsSetting(),
             'workProcessSteps' => $this->content->workProcessSteps(),
+            'branches' => $this->content->contactBranches(),
+            'serviceRequestTypes' => $this->content->serviceRequestTypes(),
         ]);
     }
 }

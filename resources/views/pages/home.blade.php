@@ -43,8 +43,8 @@
                         <h2>{{ $slide->getTranslation('subtitle', $locale) }}</h2>
                         <h1>{{ $slide->getTranslation('title', $locale) }}</h1>
                         <span>{{ $slide->getTranslation('tagline', $locale) }}</span>
-                        <button class="btn">
-                            <a href="{{ route('contact', ['locale' => $locale]) }}#form">{{ $slide->getTranslation('button_text', $locale) }}</a>
+                        <button type="button" class="btn @if($branches->isNotEmpty() && $serviceRequestTypes->isNotEmpty()) js-open-service-wizard @endif">
+                            {{ $slide->getTranslation('button_text', $locale) }}
                         </button>
                     </div>
                 </div>
@@ -177,6 +177,10 @@
             </div>
         </section>
     @endif
+
+    @if($branches->isNotEmpty() && $serviceRequestTypes->isNotEmpty())
+        <x-service-request-wizard :branches="$branches" :service-request-types="$serviceRequestTypes" />
+    @endif
 @endsection
 
 @push('scripts-before')
@@ -186,4 +190,5 @@
 
 @push('scripts')
     <script src="{{ asset('js/site/' . ($isRtl ? 'owl.carousel-rtl.js' : 'owl.carousel-ltr.js')) }}"></script>
+    <script src="{{ asset('js/site/service-request-wizard.js') }}"></script>
 @endpush

@@ -9,6 +9,7 @@ use App\Models\HeroSlide;
 use App\Models\MenuItem;
 use App\Models\Page;
 use App\Models\Service;
+use App\Models\ServiceRequestType;
 use App\Models\SocialLink;
 use App\Models\Statistic;
 use App\Models\WhyUsSetting;
@@ -122,6 +123,14 @@ class FrontendContentService
             ->get());
     }
 
+    public function serviceRequestTypes(): Collection
+    {
+        return Cache::remember('frontend.service_request_types', 3600, fn () => ServiceRequestType::query()
+            ->where('is_active', true)
+            ->orderBy('sort_order')
+            ->get());
+    }
+
     public function clearCache(): void
     {
         foreach ([
@@ -136,6 +145,7 @@ class FrontendContentService
             'frontend.about_setting',
             'frontend.why_us_setting',
             'frontend.contact_branches',
+            'frontend.service_request_types',
         ] as $key) {
             Cache::forget($key);
         }

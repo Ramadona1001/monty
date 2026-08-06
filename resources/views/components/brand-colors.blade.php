@@ -36,6 +36,7 @@
 
     .btn:not(.btn__readmore) a,
     .quote__btn,
+    .owl-carousel-hero .btn,
     .owl-carousel-hero .btn a {
         color: var(--brand-accent) !important;
     }
