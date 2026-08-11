@@ -59,6 +59,11 @@ class BranchResource extends Resource
                             ->label('WhatsApp')
                             ->placeholder('966564175052')
                             ->helperText('Numbers only, with country code.'),
+                        Forms\Components\TextInput::make('iban')
+                            ->label('IBAN')
+                            ->placeholder('SA00 0000 0000 0000 0000 0000')
+                            ->maxLength(34)
+                            ->columnSpanFull(),
                     ])
                     ->columns(3),
 

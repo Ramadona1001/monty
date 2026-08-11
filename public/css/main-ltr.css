@@ -644,6 +644,9 @@ footer .copyright a {
 .branch-contact__item a:hover {
   color: #f8aa27;
 }
+.branch-contact__label {
+  font-weight: 600;
+}
 footer .branch-contact__item {
   color: #ccc;
 }

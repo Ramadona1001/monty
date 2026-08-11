@@ -23,6 +23,7 @@ class Branch extends Model
         'phone',
         'email',
         'whatsapp',
+        'iban',
         'address',
         'sort_order',
         'is_active',
@@ -35,6 +36,7 @@ class Branch extends Model
         return filled($this->phone)
             || filled($this->email)
             || filled($this->whatsapp)
+            || filled($this->iban)
             || filled($this->getTranslation('address', $locale, false));
     }
 
