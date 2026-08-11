@@ -651,6 +651,64 @@ footer .branch-contact__item a {
   color: #fff;
 }
 
+.branch-cards__heading {
+  font-size: 1.35rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.branch-card {
+  width: 100%;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.branch-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+}
+
+.branch-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  background: var(--brand-primary, #f8aa27);
+}
+
+.branch-card__icon i {
+  font-size: 2rem;
+  color: #fff;
+}
+
+.branch-card__body {
+  padding: 1.25rem;
+}
+
+.branch-card__title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+
+.branch-card .branch-contact__item {
+  font-size: 13px;
+}
+
+.branch-card .branch-contact__item a {
+  color: inherit;
+}
+
+.branch-card .branch-contact__item a:hover {
+  color: var(--brand-primary, #f8aa27);
+}
+
 .social__boxes {
   display: -webkit-box;
   display: -ms-flexbox;

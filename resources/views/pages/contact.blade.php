@@ -21,37 +21,32 @@
             <p>{{ $page?->getTranslation('seo_description', $locale) }}</p>
         </div>
         <div class="container">
-            <div class="row">
-                <div class="col-12 col-md-7 col-lg-9">
-                    <div class="map h-100">
-                        <iframe src="{{ $settings->google_maps_embed }}" style="border: 0; width: 100%; min-height: 400px" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                    </div>
-                </div>
-                <div class="col-12 col-md-5 col-lg-3">
-                    <div class="icon__boxes">
+            <div class="map mb-4">
+                <iframe src="{{ $settings->google_maps_embed }}" style="border: 0; width: 100%; min-height: 400px" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+
+            @if($branches->isNotEmpty())
+                <div class="branch-cards">
+                    <h3 class="branch-cards__heading">{{ __('site.footer.address_heading') }}</h3>
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
                         @foreach($branches as $branch)
-                            <div class="icon__box">
-                                <div class="icon">
-                                    <i class="{{ $branch->icon }}"></i>
-                                </div>
-                                <div class="icon__box__content">
-                                    <h6>{{ $branch->getTranslation('name', $locale) }}</h6>
-                                    @include('partials.branch-contact', ['branch' => $branch])
-                                </div>
+                            <div class="col d-flex">
+                                @include('partials.branch-card', ['branch' => $branch])
                             </div>
                         @endforeach
                     </div>
-                    @if($socialLinks->isNotEmpty())
-                        <div class="social__boxes">
-                            @foreach($socialLinks as $link)
-                                <div class="social__box">
-                                    <a href="{{ $link->url }}" target="_blank" rel="noopener noreferrer"><i class="{{ $link->icon }}"></i></a>
-                                </div>
-                            @endforeach
-                        </div>
-                    @endif
                 </div>
-            </div>
+            @endif
+
+            @if($socialLinks->isNotEmpty())
+                <div class="social__boxes justify-content-center mt-4">
+                    @foreach($socialLinks as $link)
+                        <div class="social__box">
+                            <a href="{{ $link->url }}" target="_blank" rel="noopener noreferrer"><i class="{{ $link->icon }}"></i></a>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
         </div>
     </section>
 
