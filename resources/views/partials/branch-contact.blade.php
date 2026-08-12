@@ -31,10 +31,10 @@
         </p>
     @endif
 
-    @if(filled($branch->iban))
+    {{-- @if(filled($branch->iban))
         <p class="branch-contact__item mb-0">
             <i class="fa-solid fa-building-columns"></i>
             <span class="branch-contact__label">IBAN:</span> {{ $branch->iban }}
         </p>
-    @endif
+    @endif --}}
 </div>
