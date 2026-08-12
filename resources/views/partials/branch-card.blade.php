@@ -4,6 +4,6 @@
     </div>
     <div class="branch-card__body">
         <h5 class="branch-card__title">{{ $branch->getTranslation('name', $locale) }}</h5>
-        @include('partials.branch-contact', ['branch' => $branch])
+        @include('partials.branch-contact', ['branch' => $branch,'is_footer' => false])
     </div>
 </div>

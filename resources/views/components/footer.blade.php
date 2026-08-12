@@ -11,7 +11,7 @@
                     @foreach($footerBranches as $branch)
                         <li class="mb-3">
                             <strong class="text-white d-block mb-1">{{ $branch->getTranslation('name', $locale) }}</strong>
-                            @include('partials.branch-contact', ['branch' => $branch])
+                            @include('partials.branch-contact', ['branch' => $branch,'is_footer' => true])
                         </li>
                     @endforeach
                 </ul>
