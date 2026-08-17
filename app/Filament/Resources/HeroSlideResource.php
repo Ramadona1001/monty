@@ -76,7 +76,8 @@ class HeroSlideResource extends Resource
                     LocaleFields::text('subtitle', 'Subtitle', $locale),
                     LocaleFields::text('title', 'Title', $locale),
                     LocaleFields::text('tagline', 'Tagline', $locale),
-                    LocaleFields::text('button_text', 'Button text', $locale),
+                    LocaleFields::text('individuals_button_text', 'Individuals button', $locale),
+                    LocaleFields::text('projects_button_text', 'Projects button', $locale),
                 ], 'Slide text'),
             ]);
     }

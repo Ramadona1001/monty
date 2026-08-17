@@ -19,6 +19,9 @@ return [
         'read_more' => 'أعرف المزيد',
         'contact' => 'تواصل معنا',
     ],
+    'gallery' => [
+        'empty' => 'لا توجد عناصر في المعرض حالياً.',
+    ],
     'contact' => [
         'name' => 'الآسم',
         'email' => 'البريد الألكتروني',
@@ -45,6 +48,11 @@ return [
         'notes_placeholder' => 'أي تفاصيل إضافية تود مشاركتها...',
         'selected_branch' => 'الفرع المختار',
         'selected_service' => 'الخدمة',
+        'customer_category' => 'التصنيف',
+        'customer_type_individual' => 'أفراد',
+        'customer_type_project' => 'مشاريع',
+        'individuals_button' => 'للأفراد',
+        'projects_button' => 'للمشاريع',
         'info_notice' => 'سيتم التواصل معك بعد مراجعة الطلب من قبل فريقنا.',
         'next' => 'التالي',
         'previous' => 'السابق',

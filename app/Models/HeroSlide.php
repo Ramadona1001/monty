@@ -19,6 +19,8 @@ class HeroSlide extends Model
         'title',
         'tagline',
         'button_text',
+        'individuals_button_text',
+        'projects_button_text',
     ];
 
     /** @var list<string> */
@@ -27,6 +29,8 @@ class HeroSlide extends Model
         'title',
         'tagline',
         'button_text',
+        'individuals_button_text',
+        'projects_button_text',
         'button_url',
         'background_image',
         'overlay_color',

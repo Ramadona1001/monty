@@ -36,6 +36,12 @@ class ServiceRequestResource extends Resource
                         Forms\Components\Placeholder::make('service_label')
                             ->label('Service type')
                             ->content(fn (ServiceRequest $record): string => $record->serviceRequestType?->getTranslation('name', 'en') ?? '—'),
+                        Forms\Components\Placeholder::make('customer_type_label')
+                            ->label('Customer category')
+                            ->content(fn (ServiceRequest $record): string => match ($record->customer_type) {
+                                ServiceRequest::TYPE_PROJECT => 'Projects',
+                                default => 'Individuals',
+                            }),
                         Forms\Components\DateTimePicker::make('created_at')->disabled(),
                         Forms\Components\Textarea::make('notes')
                             ->disabled()
@@ -60,12 +66,29 @@ class ServiceRequestResource extends Resource
                 Tables\Columns\TextColumn::make('serviceRequestType.name')
                     ->label('Service')
                     ->formatStateUsing(fn (ServiceRequest $record) => $record->serviceRequestType?->getTranslation('name', 'en')),
+                Tables\Columns\TextColumn::make('customer_type')
+                    ->label('Category')
+                    ->badge()
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        ServiceRequest::TYPE_PROJECT => 'Projects',
+                        default => 'Individuals',
+                    })
+                    ->color(fn (string $state): string => match ($state) {
+                        ServiceRequest::TYPE_PROJECT => 'info',
+                        default => 'success',
+                    }),
                 Tables\Columns\IconColumn::make('is_read')->boolean(),
                 Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable(),
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
                 Tables\Filters\TernaryFilter::make('is_read'),
+                Tables\Filters\SelectFilter::make('customer_type')
+                    ->label('Category')
+                    ->options([
+                        ServiceRequest::TYPE_INDIVIDUAL => 'Individuals',
+                        ServiceRequest::TYPE_PROJECT => 'Projects',
+                    ]),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

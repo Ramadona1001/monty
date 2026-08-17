@@ -12,6 +12,8 @@
     data-home-url="{{ route('home', ['locale' => $locale]) }}"
     data-validation="{{ __('site.service_request.validation') }}"
     data-error="{{ __('site.service_request.error') }}"
+    data-label-individual="{{ __('site.service_request.customer_type_individual') }}"
+    data-label-project="{{ __('site.service_request.customer_type_project') }}"
 >
     <div class="service-wizard__overlay" data-wizard-close></div>
 
@@ -45,6 +47,7 @@
 
         <form class="service-wizard__body" id="service-request-form" novalidate>
             @csrf
+            <input type="hidden" name="customer_type" id="wizard-customer-type" value="individual">
 
             {{-- Step 1: Branch --}}
             <div class="service-wizard__screen is-active" data-wizard-step="1">
@@ -97,6 +100,10 @@
                 <p class="service-wizard__hint">{{ __('site.service_request.step_details_hint') }}</p>
 
                 <div class="service-wizard__summary">
+                    <div class="service-wizard__summary-row">
+                        <span class="service-wizard__summary-label">{{ __('site.service_request.customer_category') }}</span>
+                        <span class="service-wizard__summary-value" data-summary-customer-type>—</span>
+                    </div>
                     <div class="service-wizard__summary-row">
                         <span class="service-wizard__summary-label">{{ __('site.service_request.selected_branch') }}</span>
                         <span class="service-wizard__summary-value" data-summary-branch>—</span>

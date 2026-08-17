@@ -27,6 +27,14 @@ class HeroSlideSeeder extends Seeder
                     'en' => 'Ask for a preview now.',
                     'ar' => 'أطلب المعاينة الآن',
                 ],
+                'individuals_button_text' => [
+                    'en' => 'For individuals',
+                    'ar' => 'للأفراد',
+                ],
+                'projects_button_text' => [
+                    'en' => 'For projects',
+                    'ar' => 'للمشاريع',
+                ],
                 'button_url' => '/contact#form',
                 'background_image' => 'assets/img/slider/slider.webp',
                 'overlay_color' => '#000000',
@@ -50,6 +58,14 @@ class HeroSlideSeeder extends Seeder
                     'en' => 'Ask for a preview now.',
                     'ar' => 'أطلب المعاينة الآن',
                 ],
+                'individuals_button_text' => [
+                    'en' => 'For individuals',
+                    'ar' => 'للأفراد',
+                ],
+                'projects_button_text' => [
+                    'en' => 'For projects',
+                    'ar' => 'للمشاريع',
+                ],
                 'button_url' => '/contact#form',
                 'background_image' => 'assets/img/slider/slider1.webp',
                 'overlay_color' => '#000000',
@@ -72,6 +88,14 @@ class HeroSlideSeeder extends Seeder
                 'button_text' => [
                     'en' => 'Ask for a preview now.',
                     'ar' => 'أطلب المعاينة الآن',
+                ],
+                'individuals_button_text' => [
+                    'en' => 'For individuals',
+                    'ar' => 'للأفراد',
+                ],
+                'projects_button_text' => [
+                    'en' => 'For projects',
+                    'ar' => 'للمشاريع',
                 ],
                 'button_url' => '/contact#form',
                 'background_image' => 'assets/img/slider/slider2.webp',

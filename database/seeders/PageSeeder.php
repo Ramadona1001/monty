@@ -56,6 +56,24 @@ class PageSeeder extends Seeder
                 'published_at' => now(),
             ],
             [
+                'slug' => 'gallery',
+                'title' => [
+                    'en' => 'Gallery',
+                    'ar' => 'المعرض',
+                ],
+                'banner_image' => 'assets/img/banner/banner.jpg',
+                'seo_title' => [
+                    'en' => 'Our Gallery',
+                    'ar' => 'معرض أعمالنا',
+                ],
+                'seo_description' => [
+                    'en' => 'Browse our latest kitchen, cupboard and laundry room projects.',
+                    'ar' => 'تصفح أحدث مشاريع المطابخ والخزائن وغرف الغسيل.',
+                ],
+                'status' => 'published',
+                'published_at' => now(),
+            ],
+            [
                 'slug' => 'contact',
                 'title' => [
                     'en' => 'Contact us',

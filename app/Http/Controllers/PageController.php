@@ -29,6 +29,15 @@ class PageController extends Controller
         ]);
     }
 
+    public function gallery(): View
+    {
+        return view('pages.gallery', [
+            'activeNav' => 'gallery',
+            'page' => $this->content->page('gallery'),
+            'galleryItems' => $this->content->galleryItems(),
+        ]);
+    }
+
     public function contact(): View
     {
         return view('pages.contact', [

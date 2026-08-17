@@ -24,6 +24,18 @@
             position: relative;
             z-index: 1;
         }
+
+        .hero__buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .hero__buttons .btn {
+            margin-top: 0;
+        }
     </style>
 @endpush
 
@@ -43,9 +55,24 @@
                         <h2>{{ $slide->getTranslation('subtitle', $locale) }}</h2>
                         <h1>{{ $slide->getTranslation('title', $locale) }}</h1>
                         <span>{{ $slide->getTranslation('tagline', $locale) }}</span>
-                        <button type="button" class="btn @if($branches->isNotEmpty() && $serviceRequestTypes->isNotEmpty()) js-open-service-wizard @endif">
-                            {{ $slide->getTranslation('button_text', $locale) }}
-                        </button>
+                        @if($branches->isNotEmpty() && $serviceRequestTypes->isNotEmpty())
+                            <div class="hero__buttons">
+                                <button
+                                    type="button"
+                                    class="btn js-open-service-wizard"
+                                    data-customer-type="individual"
+                                >
+                                    {{ $slide->getTranslation('individuals_button_text', $locale, false) ?: __('site.service_request.individuals_button') }}
+                                </button>
+                                <button
+                                    type="button"
+                                    class="btn js-open-service-wizard"
+                                    data-customer-type="project"
+                                >
+                                    {{ $slide->getTranslation('projects_button_text', $locale, false) ?: __('site.service_request.projects_button') }}
+                                </button>
+                            </div>
+                        @endif
                     </div>
                 </div>
             @endforeach

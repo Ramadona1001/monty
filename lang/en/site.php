@@ -19,6 +19,9 @@ return [
         'read_more' => 'read more',
         'contact' => 'Contact',
     ],
+    'gallery' => [
+        'empty' => 'No gallery items available yet.',
+    ],
     'contact' => [
         'name' => 'Name',
         'email' => 'E-mail',
@@ -45,6 +48,11 @@ return [
         'notes_placeholder' => 'Any extra details you would like to share...',
         'selected_branch' => 'Selected branch',
         'selected_service' => 'Service',
+        'customer_category' => 'Category',
+        'customer_type_individual' => 'Individuals',
+        'customer_type_project' => 'Projects',
+        'individuals_button' => 'For individuals',
+        'projects_button' => 'For projects',
         'info_notice' => 'Our team will contact you after reviewing your request.',
         'next' => 'Next',
         'previous' => 'Previous',

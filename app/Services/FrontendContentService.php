@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\AboutSetting;
 use App\Models\Branch;
 use App\Models\Feature;
+use App\Models\GalleryItem;
 use App\Models\HeroSlide;
 use App\Models\MenuItem;
 use App\Models\Page;
@@ -131,6 +132,14 @@ class FrontendContentService
             ->get());
     }
 
+    public function galleryItems(): Collection
+    {
+        return Cache::remember('frontend.gallery_items', 3600, fn () => GalleryItem::query()
+            ->where('is_active', true)
+            ->orderBy('sort_order')
+            ->get());
+    }
+
     public function clearCache(): void
     {
         foreach ([
@@ -146,6 +155,7 @@ class FrontendContentService
             'frontend.why_us_setting',
             'frontend.contact_branches',
             'frontend.service_request_types',
+            'frontend.gallery_items',
         ] as $key) {
             Cache::forget($key);
         }
@@ -154,7 +164,7 @@ class FrontendContentService
             Cache::forget("frontend.footer_branches.{$locale}");
         }
 
-        foreach (['home', 'about', 'services', 'contact'] as $slug) {
+        foreach (['home', 'about', 'services', 'gallery', 'contact'] as $slug) {
             Cache::forget("frontend.page.{$slug}");
         }
     }

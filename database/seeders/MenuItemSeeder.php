@@ -21,19 +21,27 @@ class MenuItemSeeder extends Seeder
                 'sort_order' => 2,
             ],
             [
+                'route_name' => 'gallery',
+                'label' => ['en' => 'Gallery', 'ar' => 'المعرض'],
+                'sort_order' => 3,
+            ],
+            [
                 'route_name' => 'about',
                 'label' => ['en' => 'About us', 'ar' => 'عن الشركة'],
-                'sort_order' => 3,
+                'sort_order' => 4,
             ],
             [
                 'route_name' => 'contact',
                 'label' => ['en' => 'Contact us', 'ar' => 'تواصل معنا'],
-                'sort_order' => 4,
+                'sort_order' => 5,
             ],
         ];
 
         foreach ($items as $item) {
-            MenuItem::query()->create(array_merge($item, ['is_active' => true]));
+            MenuItem::query()->updateOrCreate(
+                ['route_name' => $item['route_name']],
+                array_merge($item, ['is_active' => true])
+            );
         }
     }
 }

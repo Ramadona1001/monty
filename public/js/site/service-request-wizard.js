@@ -17,11 +17,19 @@
   const serviceRadios = wizard.querySelectorAll('input[name="service_request_type_id"]');
   const summaryBranch = wizard.querySelector("[data-summary-branch]");
   const summaryService = wizard.querySelector("[data-summary-service]");
+  const summaryCustomerType = wizard.querySelector("[data-summary-customer-type]");
+  const customerTypeInput = wizard.querySelector("#wizard-customer-type");
   const serviceDisplay = wizard.querySelector("#wizard-service-display");
   const detailsTitle = wizard.querySelector("[data-wizard-details-title]");
 
   let currentStep = 1;
+  let currentCustomerType = "individual";
   const submitUrl = wizard.dataset.submitUrl;
+
+  const customerTypeLabels = {
+    individual: wizard.dataset.labelIndividual || "Individuals",
+    project: wizard.dataset.labelProject || "Projects",
+  };
 
   const messages = {
     validation: wizard.dataset.validation || "Please complete all required fields.",
@@ -48,7 +56,11 @@
     const branchOption = branchSelect?.selectedOptions[0];
     const serviceRadio = getSelectedServiceRadio();
 
-    if (summaryBranch && branchOption) {
+    if (summaryCustomerType) {
+      summaryCustomerType.textContent = customerTypeLabels[currentCustomerType] || "—";
+    }
+
+    if (branchOption && summaryBranch) {
       summaryBranch.textContent = branchOption.value ? branchOption.textContent : "—";
     }
 
@@ -124,7 +136,11 @@
     return true;
   }
 
-  function openWizard() {
+  function openWizard(customerType) {
+    currentCustomerType = customerType === "project" ? "project" : "individual";
+    if (customerTypeInput) {
+      customerTypeInput.value = currentCustomerType;
+    }
     wizard.hidden = false;
     wizard.setAttribute("aria-hidden", "false");
     document.body.classList.add("service-wizard-open");
@@ -136,15 +152,21 @@
     wizard.setAttribute("aria-hidden", "true");
     document.body.classList.remove("service-wizard-open");
     form?.reset();
+    if (customerTypeInput) {
+      customerTypeInput.value = currentCustomerType;
+    }
     serviceRadios.forEach((radio) => {
       radio.closest(".service-wizard__card")?.classList.remove("is-selected");
     });
     setStep(1);
+    currentCustomerType = "individual";
     hideError();
   }
 
   openButtons.forEach((button) => {
-    button.addEventListener("click", openWizard);
+    button.addEventListener("click", () => {
+      openWizard(button.dataset.customerType || "individual");
+    });
   });
 
   closeTriggers.forEach((trigger) => {
