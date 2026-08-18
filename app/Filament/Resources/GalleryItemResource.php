@@ -98,9 +98,9 @@ class GalleryItemResource extends Resource
                 Tables\Columns\ImageColumn::make('media_path')
                     ->label('Preview')
                     ->disk('public_assets')
-                    ->visible(fn (GalleryItem $record): bool => $record->isImage() && $record->usesUpload()),
+                    ->visible(fn (?GalleryItem $record): bool => $record instanceof GalleryItem && $record->isImage() && $record->usesUpload()),
                 Tables\Columns\TextColumn::make('title')
-                    ->formatStateUsing(fn (GalleryItem $record) => $record->getTranslation('title', 'en')),
+                    ->formatStateUsing(fn ($state, ?GalleryItem $record): string => $record?->getTranslation('title', 'en') ?? '—'),
                 Tables\Columns\TextColumn::make('media_type')
                     ->badge()
                     ->formatStateUsing(fn (string $state): string => ucfirst($state)),

@@ -27,14 +27,15 @@
 
         .hero__buttons {
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column;
+            align-items: center;
             gap: 0.75rem;
-            justify-content: center;
             margin-top: 1rem;
         }
 
         .hero__buttons .btn {
             margin-top: 0;
+            width: min(280px, 100%);
         }
     </style>
 @endpush
