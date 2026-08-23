@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\View\Composers\SiteComposer;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -22,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Paginator::useBootstrapFive();
+
         View::composer(['layouts.app', 'components.*', 'pages.*'], SiteComposer::class);
 
         if ($this->app->runningInConsole() && ! $this->app->runningUnitTests()) {

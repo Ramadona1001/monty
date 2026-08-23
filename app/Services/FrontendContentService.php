@@ -15,6 +15,7 @@ use App\Models\SocialLink;
 use App\Models\Statistic;
 use App\Models\WhyUsSetting;
 use App\Models\WorkProcessStep;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
@@ -132,12 +133,13 @@ class FrontendContentService
             ->get());
     }
 
-    public function galleryItems(): Collection
+    public function galleryItemsPaginated(int $perPage = 12): LengthAwarePaginator
     {
-        return Cache::remember('frontend.gallery_items', 3600, fn () => GalleryItem::query()
+        return GalleryItem::query()
             ->where('is_active', true)
             ->orderBy('sort_order')
-            ->get());
+            ->paginate($perPage)
+            ->withQueryString();
     }
 
     public function clearCache(): void
@@ -155,7 +157,6 @@ class FrontendContentService
             'frontend.why_us_setting',
             'frontend.contact_branches',
             'frontend.service_request_types',
-            'frontend.gallery_items',
         ] as $key) {
             Cache::forget($key);
         }

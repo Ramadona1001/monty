@@ -34,7 +34,7 @@ class PageController extends Controller
         return view('pages.gallery', [
             'activeNav' => 'gallery',
             'page' => $this->content->page('gallery'),
-            'galleryItems' => $this->content->galleryItems(),
+            'galleryItems' => $this->content->galleryItemsPaginated(),
         ]);
     }
 

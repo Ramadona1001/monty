@@ -29,6 +29,12 @@
                         </div>
                     @endforeach
                 </div>
+
+                @if($galleryItems->hasPages())
+                    <div class="gallery-pagination mt-4">
+                        {{ $galleryItems->links() }}
+                    </div>
+                @endif
             @else
                 <p class="text-center text-muted">{{ __('site.gallery.empty') }}</p>
             @endif

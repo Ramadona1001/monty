@@ -1223,3 +1223,32 @@ body.service-wizard-open {
 .gallery-modal__video {
   background: #000;
 }
+
+.gallery-pagination {
+  display: flex;
+  justify-content: center;
+}
+
+.gallery-pagination .pagination {
+  gap: 0.35rem;
+  margin-bottom: 0;
+}
+
+.gallery-pagination .page-link {
+  color: #222;
+  border-color: #ddd;
+  min-width: 2.5rem;
+  text-align: center;
+}
+
+.gallery-pagination .page-item.active .page-link {
+  background-color: var(--brand-primary, #f8aa27);
+  border-color: var(--brand-primary, #f8aa27);
+  color: #fff;
+}
+
+.gallery-pagination .page-link:hover {
+  color: #222;
+  background-color: color-mix(in srgb, var(--brand-primary, #f8aa27) 15%, #fff);
+  border-color: var(--brand-primary, #f8aa27);
+}
