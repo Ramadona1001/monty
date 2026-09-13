@@ -9,6 +9,7 @@ use App\Models\GalleryItem;
 use App\Models\HeroSlide;
 use App\Models\MenuItem;
 use App\Models\Page;
+use App\Models\Product;
 use App\Models\Service;
 use App\Models\ServiceRequestType;
 use App\Models\SocialLink;
@@ -142,6 +143,15 @@ class FrontendContentService
             ->withQueryString();
     }
 
+    public function productsPaginated(int $perPage = 12): LengthAwarePaginator
+    {
+        return Product::query()
+            ->where('is_active', true)
+            ->orderBy('sort_order')
+            ->paginate($perPage)
+            ->withQueryString();
+    }
+
     public function clearCache(): void
     {
         foreach ([
@@ -165,7 +175,7 @@ class FrontendContentService
             Cache::forget("frontend.footer_branches.{$locale}");
         }
 
-        foreach (['home', 'about', 'services', 'gallery', 'contact'] as $slug) {
+        foreach (['home', 'about', 'services', 'products', 'gallery', 'contact'] as $slug) {
             Cache::forget("frontend.page.{$slug}");
         }
     }

@@ -38,6 +38,15 @@ class PageController extends Controller
         ]);
     }
 
+    public function products(): View
+    {
+        return view('pages.products', [
+            'activeNav' => 'products',
+            'page' => $this->content->page('products'),
+            'products' => $this->content->productsPaginated(),
+        ]);
+    }
+
     public function contact(): View
     {
         return view('pages.contact', [

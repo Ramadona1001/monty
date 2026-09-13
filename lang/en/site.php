@@ -22,6 +22,9 @@ return [
     'gallery' => [
         'empty' => 'No gallery items available yet.',
     ],
+    'products' => [
+        'empty' => 'No products available yet.',
+    ],
     'contact' => [
         'name' => 'Name',
         'email' => 'E-mail',

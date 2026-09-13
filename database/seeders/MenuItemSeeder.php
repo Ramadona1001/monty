@@ -21,19 +21,24 @@ class MenuItemSeeder extends Seeder
                 'sort_order' => 2,
             ],
             [
+                'route_name' => 'products',
+                'label' => ['en' => 'Products', 'ar' => 'المنتجات'],
+                'sort_order' => 3,
+            ],
+            [
                 'route_name' => 'gallery',
                 'label' => ['en' => 'Gallery', 'ar' => 'المعرض'],
-                'sort_order' => 3,
+                'sort_order' => 4,
             ],
             [
                 'route_name' => 'about',
                 'label' => ['en' => 'About us', 'ar' => 'عن الشركة'],
-                'sort_order' => 4,
+                'sort_order' => 5,
             ],
             [
                 'route_name' => 'contact',
                 'label' => ['en' => 'Contact us', 'ar' => 'تواصل معنا'],
-                'sort_order' => 5,
+                'sort_order' => 6,
             ],
         ];
 

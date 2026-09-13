@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             BranchSeeder::class,
             ServiceRequestTypeSeeder::class,
             GalleryItemSeeder::class,
+            ProductSeeder::class,
             SocialLinkSeeder::class,
             TestimonialSeeder::class,
             TeamMemberSeeder::class,

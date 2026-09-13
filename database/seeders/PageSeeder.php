@@ -56,6 +56,24 @@ class PageSeeder extends Seeder
                 'published_at' => now(),
             ],
             [
+                'slug' => 'products',
+                'title' => [
+                    'en' => 'Products',
+                    'ar' => 'المنتجات',
+                ],
+                'banner_image' => 'assets/img/banner/banner.jpg',
+                'seo_title' => [
+                    'en' => 'Our Products',
+                    'ar' => 'منتجاتنا',
+                ],
+                'seo_description' => [
+                    'en' => 'Explore our full range of kitchens, wardrobes, laundry rooms and more.',
+                    'ar' => 'تصفح مجموعتنا الكاملة من المطابخ والخزائن وغرف الغسيل والمزيد.',
+                ],
+                'status' => 'published',
+                'published_at' => now(),
+            ],
+            [
                 'slug' => 'gallery',
                 'title' => [
                     'en' => 'Gallery',
