@@ -22,6 +22,8 @@ class HomeController extends Controller
             'workProcessSteps' => $this->content->workProcessSteps(),
             'branches' => $this->content->contactBranches(),
             'serviceRequestTypes' => $this->content->serviceRequestTypes(),
+            'products' => $this->content->products(),
+            'measurementProducts' => $this->content->measurementProducts(),
         ]);
     }
 }

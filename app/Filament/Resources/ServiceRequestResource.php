@@ -42,6 +42,9 @@ class ServiceRequestResource extends Resource
                                 ServiceRequest::TYPE_PROJECT => 'Projects',
                                 default => 'Individuals',
                             }),
+                        Forms\Components\Placeholder::make('product_label')
+                            ->label('Product')
+                            ->content(fn (ServiceRequest $record): string => $record->productLabel('en')),
                         Forms\Components\DateTimePicker::make('created_at')->disabled(),
                         Forms\Components\Textarea::make('notes')
                             ->disabled()
@@ -77,6 +80,9 @@ class ServiceRequestResource extends Resource
                         ServiceRequest::TYPE_PROJECT => 'info',
                         default => 'success',
                     }),
+                Tables\Columns\TextColumn::make('product.title')
+                    ->label('Product')
+                    ->formatStateUsing(fn (ServiceRequest $record): string => $record->productLabel('en')),
                 Tables\Columns\IconColumn::make('is_read')->boolean(),
                 Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable(),
             ])

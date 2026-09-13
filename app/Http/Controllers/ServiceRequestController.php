@@ -10,7 +10,8 @@ class ServiceRequestController extends Controller
 {
     public function store(StoreServiceRequestRequest $request): JsonResponse
     {
-        ServiceRequest::query()->create($request->validated());
+        $data = $request->safe()->except(['product_choice']);
+        ServiceRequest::query()->create($data);
 
         return response()->json([
             'message' => __('site.service_request.success'),

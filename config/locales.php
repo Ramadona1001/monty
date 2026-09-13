@@ -2,8 +2,8 @@
 
 return [
     'supported' => ['en', 'ar'],
-    'default' => 'en',
-    'fallback' => 'en',
+    'default' => 'ar',
+    'fallback' => 'ar',
 
     'labels' => [
         'en' => 'English',

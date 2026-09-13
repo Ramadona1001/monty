@@ -143,6 +143,23 @@ class FrontendContentService
             ->withQueryString();
     }
 
+    public function products(): Collection
+    {
+        return Product::query()
+            ->where('is_active', true)
+            ->orderBy('sort_order')
+            ->get();
+    }
+
+    public function measurementProducts(): Collection
+    {
+        return Product::query()
+            ->where('is_active', true)
+            ->orderBy('sort_order')
+            ->limit(10)
+            ->get();
+    }
+
     public function productsPaginated(int $perPage = 12): LengthAwarePaginator
     {
         return Product::query()

@@ -18,7 +18,9 @@
   const summaryBranch = wizard.querySelector("[data-summary-branch]");
   const summaryService = wizard.querySelector("[data-summary-service]");
   const summaryCustomerType = wizard.querySelector("[data-summary-customer-type]");
+  const summaryProduct = wizard.querySelector("[data-summary-product]");
   const customerTypeInput = wizard.querySelector("#wizard-customer-type");
+  const productSelect = wizard.querySelector("#wizard-product");
   const serviceDisplay = wizard.querySelector("#wizard-service-display");
   const detailsTitle = wizard.querySelector("[data-wizard-details-title]");
 
@@ -69,6 +71,11 @@
       if (summaryService) summaryService.textContent = serviceName;
       if (serviceDisplay) serviceDisplay.value = serviceName;
       if (detailsTitle) detailsTitle.textContent = serviceName;
+    }
+
+    const productOption = productSelect?.selectedOptions[0];
+    if (summaryProduct && productOption) {
+      summaryProduct.textContent = productOption.value ? productOption.textContent : "—";
     }
   }
 
@@ -130,6 +137,14 @@
         showError(messages.validation);
         return false;
       }
+
+      if (!productSelect?.value) {
+        productSelect?.focus();
+        showError(messages.validation);
+        return false;
+      }
+
+      updateSummary();
     }
 
     hideError();
@@ -201,6 +216,7 @@
   });
 
   branchSelect?.addEventListener("change", hideError);
+  productSelect?.addEventListener("change", hideError);
 
   form?.addEventListener("submit", async (event) => {
     event.preventDefault();

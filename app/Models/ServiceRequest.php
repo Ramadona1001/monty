@@ -19,6 +19,8 @@ class ServiceRequest extends Model
         'branch_id',
         'service_request_type_id',
         'customer_type',
+        'product_id',
+        'is_all_products',
         'customer_name',
         'phone',
         'notes',
@@ -30,6 +32,7 @@ class ServiceRequest extends Model
     {
         return [
             'is_read' => 'boolean',
+            'is_all_products' => 'boolean',
         ];
     }
 
@@ -41,6 +44,22 @@ class ServiceRequest extends Model
     public function serviceRequestType(): BelongsTo
     {
         return $this->belongsTo(ServiceRequestType::class);
+    }
+
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    public function productLabel(?string $locale = null): string
+    {
+        $locale ??= app()->getLocale();
+
+        if ($this->is_all_products) {
+            return __('site.service_request.all_products', [], $locale);
+        }
+
+        return $this->product?->getTranslation('title', $locale, false) ?? '—';
     }
 
     public function customerTypeLabel(?string $locale = null): string

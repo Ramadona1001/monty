@@ -1309,3 +1309,73 @@ body.service-wizard-open {
   color: #666;
   line-height: 1.5;
 }
+
+.shop-wizard__products {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  max-height: 420px;
+  overflow-y: auto;
+  padding-inline-end: 0.25rem;
+}
+
+.shop-wizard__product {
+  margin: 0;
+  cursor: pointer;
+}
+
+.shop-wizard__product input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.shop-wizard__product-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.5rem;
+  min-height: 140px;
+  padding: 0.75rem;
+  border: 2px solid #e5e5e5;
+  border-radius: 10px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.shop-wizard__product.is-selected .shop-wizard__product-inner,
+.shop-wizard__product input:checked + .shop-wizard__product-inner {
+  border-color: var(--brand-primary, #f8aa27);
+  box-shadow: 0 0 0 1px var(--brand-primary, #f8aa27);
+}
+
+.shop-wizard__product-image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #f3f3f3;
+}
+
+.shop-wizard__product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.shop-wizard__product-title {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.hero__buttons .btn i {
+  margin-inline-end: 0.35rem;
+}
+
+@media (min-width: 576px) {
+  .shop-wizard__products {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

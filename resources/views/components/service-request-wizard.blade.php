@@ -1,6 +1,7 @@
 @props([
     'branches',
     'serviceRequestTypes',
+    'measurementProducts',
 ])
 
 <div
@@ -112,6 +113,10 @@
                         <span class="service-wizard__summary-label">{{ __('site.service_request.selected_service') }}</span>
                         <span class="service-wizard__summary-value" data-summary-service>—</span>
                     </div>
+                    <div class="service-wizard__summary-row">
+                        <span class="service-wizard__summary-label">{{ __('site.service_request.selected_product') }}</span>
+                        <span class="service-wizard__summary-value" data-summary-product>—</span>
+                    </div>
                 </div>
 
                 <div class="service-wizard__field">
@@ -122,6 +127,17 @@
                 <div class="service-wizard__field">
                     <label class="service-wizard__label" for="wizard-phone">{{ __('site.service_request.phone') }}</label>
                     <input class="service-wizard__input" type="tel" id="wizard-phone" name="phone" required autocomplete="tel">
+                </div>
+
+                <div class="service-wizard__field">
+                    <label class="service-wizard__label" for="wizard-product">{{ __('site.service_request.select_product') }}</label>
+                    <select class="service-wizard__select" id="wizard-product" name="product_choice" required>
+                        <option value="">{{ __('site.service_request.select_product') }}</option>
+                        @foreach($measurementProducts as $product)
+                            <option value="{{ $product->id }}">{{ $product->getTranslation('title', $locale) }}</option>
+                        @endforeach
+                        <option value="all">{{ __('site.service_request.all_products') }}</option>
+                    </select>
                 </div>
 
                 <div class="service-wizard__field">

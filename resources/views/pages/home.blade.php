@@ -72,6 +72,12 @@
                                 >
                                     {{ $slide->getTranslation('projects_button_text', $locale, false) ?: __('site.service_request.projects_button') }}
                                 </button>
+                                @if($products->isNotEmpty())
+                                    <button type="button" class="btn js-open-shop-wizard">
+                                        <i class="fa-solid fa-cart-shopping"></i>
+                                        {{ __('site.shop.button') }}
+                                    </button>
+                                @endif
                             </div>
                         @endif
                     </div>
@@ -207,7 +213,15 @@
     @endif
 
     @if($branches->isNotEmpty() && $serviceRequestTypes->isNotEmpty())
-        <x-service-request-wizard :branches="$branches" :service-request-types="$serviceRequestTypes" />
+        <x-service-request-wizard
+            :branches="$branches"
+            :service-request-types="$serviceRequestTypes"
+            :measurement-products="$measurementProducts"
+        />
+    @endif
+
+    @if($products->isNotEmpty())
+        <x-shop-wizard :products="$products" />
     @endif
 @endsection
 
@@ -219,4 +233,5 @@
 @push('scripts')
     <script src="{{ asset('js/site/' . ($isRtl ? 'owl.carousel-rtl.js' : 'owl.carousel-ltr.js')) }}"></script>
     <script src="{{ asset('js/site/service-request-wizard.js') }}"></script>
+    <script src="{{ asset('js/site/shop-wizard.js') }}"></script>
 @endpush
