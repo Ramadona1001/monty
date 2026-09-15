@@ -43,7 +43,7 @@
 
             @if($productTabs->isNotEmpty())
                 <div class="product-category-tabs">
-                    <ul class="nav product-category-tabs__nav" id="productCategoryTabs" role="tablist">
+                    <ul class="nav flex-column product-category-tabs__nav" id="productCategoryTabs" role="tablist">
                         @foreach($productTabs as $tab)
                             <li class="nav-item" role="presentation">
                                 <button
@@ -71,7 +71,7 @@
                                 aria-labelledby="{{ $tab['id'] }}-tab"
                                 tabindex="0"
                             >
-                                <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
+                                <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-2 row-cols-xl-3 g-4">
                                     @foreach($tab['products'] as $product)
                                         <div class="col d-flex">
                                             @include('partials.product-card', ['product' => $product, 'showCategory' => false])

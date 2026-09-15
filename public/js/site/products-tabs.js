@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     activeTab.scrollIntoView({
       behavior: "smooth",
       block: "nearest",
-      inline: "center",
+      inline: "nearest",
     });
   });
 });
