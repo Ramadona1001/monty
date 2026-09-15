@@ -24,6 +24,7 @@ return [
     ],
     'products' => [
         'empty' => 'No products available yet.',
+        'uncategorized' => 'Other products',
     ],
     'shop' => [
         'button' => 'Shop here now',
@@ -72,9 +73,9 @@ return [
         'customer_type_project' => 'Projects',
         'individuals_button' => 'For individuals',
         'projects_button' => 'For projects',
-        'select_product' => 'Choose product',
-        'selected_product' => 'Product',
-        'all_products' => 'All of the above',
+        'select_product' => 'Choose products',
+        'selected_product' => 'Products',
+        'all_products' => 'Select all',
         'info_notice' => 'Our team will contact you after reviewing your request.',
         'next' => 'Next',
         'previous' => 'Previous',

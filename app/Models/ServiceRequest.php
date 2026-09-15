@@ -21,6 +21,7 @@ class ServiceRequest extends Model
         'customer_type',
         'product_id',
         'is_all_products',
+        'product_ids',
         'customer_name',
         'phone',
         'notes',
@@ -33,6 +34,7 @@ class ServiceRequest extends Model
         return [
             'is_read' => 'boolean',
             'is_all_products' => 'boolean',
+            'product_ids' => 'array',
         ];
     }
 
@@ -54,6 +56,19 @@ class ServiceRequest extends Model
     public function productLabel(?string $locale = null): string
     {
         $locale ??= app()->getLocale();
+
+        if (filled($this->product_ids)) {
+            $products = Product::query()
+                ->whereIn('id', $this->product_ids)
+                ->orderBy('sort_order')
+                ->get();
+
+            if ($products->isNotEmpty()) {
+                return $products
+                    ->map(fn (Product $product): string => $product->getTranslation('title', $locale, false))
+                    ->implode('، ');
+            }
+        }
 
         if ($this->is_all_products) {
             return __('site.service_request.all_products', [], $locale);

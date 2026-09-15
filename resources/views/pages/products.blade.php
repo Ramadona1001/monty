@@ -15,24 +15,40 @@
 @endsection
 
 @section('content')
+    @php
+        $hasProducts = $productCategories->isNotEmpty() || $uncategorizedProducts->isNotEmpty();
+    @endphp
+
     <section class="products-section py-5">
         <div class="container">
             @if($page?->getTranslation('seo_description', $locale))
                 <p class="text-center mb-4">{{ $page->getTranslation('seo_description', $locale) }}</p>
             @endif
 
-            @if($products->isNotEmpty())
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
-                    @foreach($products as $product)
-                        <div class="col d-flex">
-                            @include('partials.product-card', ['product' => $product])
+            @if($hasProducts)
+                @foreach($productCategories as $category)
+                    <div class="product-category-section">
+                        <h2 class="product-category-section__title">{{ $category->getTranslation('name', $locale) }}</h2>
+                        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
+                            @foreach($category->products as $product)
+                                <div class="col d-flex">
+                                    @include('partials.product-card', ['product' => $product, 'showCategory' => false])
+                                </div>
+                            @endforeach
                         </div>
-                    @endforeach
-                </div>
+                    </div>
+                @endforeach
 
-                @if($products->hasPages())
-                    <div class="gallery-pagination mt-4">
-                        {{ $products->links() }}
+                @if($uncategorizedProducts->isNotEmpty())
+                    <div class="product-category-section">
+                        <h2 class="product-category-section__title">{{ __('site.products.uncategorized') }}</h2>
+                        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
+                            @foreach($uncategorizedProducts as $product)
+                                <div class="col d-flex">
+                                    @include('partials.product-card', ['product' => $product, 'showCategory' => false])
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 @endif
             @else

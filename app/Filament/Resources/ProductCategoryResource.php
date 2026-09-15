@@ -3,9 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Forms\LocaleFields;
-use App\Filament\Forms\MediaUpload;
-use App\Filament\Resources\ProductResource\Pages;
-use App\Models\Product;
+use App\Filament\Resources\ProductCategoryResource\Pages;
 use App\Models\ProductCategory;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -15,17 +13,19 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ProductResource extends Resource
+class ProductCategoryResource extends Resource
 {
-    protected static ?string $model = Product::class;
+    protected static ?string $model = ProductCategory::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-cube';
+    protected static ?string $navigationIcon = 'heroicon-o-tag';
 
     protected static ?string $navigationGroup = 'Site';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 4;
 
-    protected static ?string $navigationLabel = 'Products';
+    protected static ?string $navigationLabel = 'Product categories';
+
+    protected static ?string $modelLabel = 'Product category';
 
     public static function form(Form $form): Form
     {
@@ -33,22 +33,10 @@ class ProductResource extends Resource
             ->schema([
                 Forms\Components\Section::make('Settings')
                     ->schema([
-                        Forms\Components\Select::make('product_category_id')
-                            ->label('Category')
-                            ->relationship(
-                                name: 'category',
-                                titleAttribute: 'slug',
-                                modifyQueryUsing: fn ($query) => $query->where('is_active', true)->orderBy('sort_order'),
-                            )
-                            ->getOptionLabelFromRecordUsing(fn (ProductCategory $record): string => $record->getTranslation('name', 'en'))
-                            ->searchable()
-                            ->preload()
-                            ->required(),
                         Forms\Components\TextInput::make('slug')
                             ->required()
                             ->unique(ignoreRecord: true)
                             ->alphaDash(),
-                        MediaUpload::image('image', 'Product image', 'assets/uploads/products'),
                         Forms\Components\TextInput::make('sort_order')
                             ->numeric()
                             ->default(0)
@@ -58,12 +46,11 @@ class ProductResource extends Resource
                             ->default(true)
                             ->inline(false),
                     ])
-                    ->columns(2),
+                    ->columns(3),
 
                 LocaleFields::tabs(fn (string $locale) => [
-                    LocaleFields::text('title', 'Title', $locale),
-                    LocaleFields::textarea('excerpt', 'Short description', $locale, 3),
-                ], 'Product text'),
+                    LocaleFields::text('name', 'Name', $locale),
+                ], 'Category name'),
             ]);
     }
 
@@ -72,15 +59,12 @@ class ProductResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('sort_order')->sortable(),
-                Tables\Columns\ImageColumn::make('image')
-                    ->disk('public_assets')
-                    ->square(),
-                Tables\Columns\TextColumn::make('category.name')
-                    ->label('Category')
-                    ->formatStateUsing(fn (Product $record): string => $record->category?->getTranslation('name', 'en') ?? '—'),
-                Tables\Columns\TextColumn::make('title')
-                    ->formatStateUsing(fn ($state, ?Product $record): string => $record?->getTranslation('title', 'en') ?? '—'),
+                Tables\Columns\TextColumn::make('name')
+                    ->formatStateUsing(fn ($state, ?ProductCategory $record): string => $record?->getTranslation('name', 'en') ?? '—'),
                 Tables\Columns\TextColumn::make('slug'),
+                Tables\Columns\TextColumn::make('products_count')
+                    ->counts('products')
+                    ->label('Products'),
                 Tables\Columns\IconColumn::make('is_active')->boolean(),
             ])
             ->defaultSort('sort_order')
@@ -93,9 +77,9 @@ class ProductResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListProducts::route('/'),
-            'create' => Pages\CreateProduct::route('/create'),
-            'edit' => Pages\EditProduct::route('/{record}/edit'),
+            'index' => Pages\ListProductCategories::route('/'),
+            'create' => Pages\CreateProductCategory::route('/create'),
+            'edit' => Pages\EditProductCategory::route('/{record}/edit'),
         ];
     }
 

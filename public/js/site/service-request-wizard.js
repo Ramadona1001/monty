@@ -20,7 +20,8 @@
   const summaryCustomerType = wizard.querySelector("[data-summary-customer-type]");
   const summaryProduct = wizard.querySelector("[data-summary-product]");
   const customerTypeInput = wizard.querySelector("#wizard-customer-type");
-  const productSelect = wizard.querySelector("#wizard-product");
+  const productCheckboxes = wizard.querySelectorAll('input[name="product_ids[]"]');
+  const selectAllCheckbox = wizard.querySelector("[data-product-select-all]");
   const serviceDisplay = wizard.querySelector("#wizard-service-display");
   const detailsTitle = wizard.querySelector("[data-wizard-details-title]");
 
@@ -54,6 +55,15 @@
     return wizard.querySelector('input[name="service_request_type_id"]:checked');
   }
 
+  function getSelectedProductCheckboxes() {
+    return Array.from(productCheckboxes).filter((checkbox) => checkbox.checked);
+  }
+
+  function syncSelectAllCheckbox() {
+    if (!selectAllCheckbox || productCheckboxes.length === 0) return;
+    selectAllCheckbox.checked = getSelectedProductCheckboxes().length === productCheckboxes.length;
+  }
+
   function updateSummary() {
     const branchOption = branchSelect?.selectedOptions[0];
     const serviceRadio = getSelectedServiceRadio();
@@ -73,9 +83,11 @@
       if (detailsTitle) detailsTitle.textContent = serviceName;
     }
 
-    const productOption = productSelect?.selectedOptions[0];
-    if (summaryProduct && productOption) {
-      summaryProduct.textContent = productOption.value ? productOption.textContent : "—";
+    const selectedProducts = getSelectedProductCheckboxes();
+    if (summaryProduct) {
+      summaryProduct.textContent = selectedProducts.length
+        ? selectedProducts.map((checkbox) => checkbox.dataset.productName || checkbox.value).join("، ")
+        : "—";
     }
   }
 
@@ -138,8 +150,7 @@
         return false;
       }
 
-      if (!productSelect?.value) {
-        productSelect?.focus();
+      if (!getSelectedProductCheckboxes().length) {
         showError(messages.validation);
         return false;
       }
@@ -173,6 +184,12 @@
     serviceRadios.forEach((radio) => {
       radio.closest(".service-wizard__card")?.classList.remove("is-selected");
     });
+    productCheckboxes.forEach((checkbox) => {
+      checkbox.checked = false;
+    });
+    if (selectAllCheckbox) {
+      selectAllCheckbox.checked = false;
+    }
     setStep(1);
     currentCustomerType = "individual";
     hideError();
@@ -216,7 +233,20 @@
   });
 
   branchSelect?.addEventListener("change", hideError);
-  productSelect?.addEventListener("change", hideError);
+
+  productCheckboxes.forEach((checkbox) => {
+    checkbox.addEventListener("change", () => {
+      syncSelectAllCheckbox();
+      hideError();
+    });
+  });
+
+  selectAllCheckbox?.addEventListener("change", () => {
+    productCheckboxes.forEach((checkbox) => {
+      checkbox.checked = selectAllCheckbox.checked;
+    });
+    hideError();
+  });
 
   form?.addEventListener("submit", async (event) => {
     event.preventDefault();

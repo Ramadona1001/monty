@@ -130,14 +130,26 @@
                 </div>
 
                 <div class="service-wizard__field">
-                    <label class="service-wizard__label" for="wizard-product">{{ __('site.service_request.select_product') }}</label>
-                    <select class="service-wizard__select" id="wizard-product" name="product_choice" required>
-                        <option value="">{{ __('site.service_request.select_product') }}</option>
-                        @foreach($measurementProducts as $product)
-                            <option value="{{ $product->id }}">{{ $product->getTranslation('title', $locale) }}</option>
-                        @endforeach
-                        <option value="all">{{ __('site.service_request.all_products') }}</option>
-                    </select>
+                    <label class="service-wizard__label">{{ __('site.service_request.select_product') }}</label>
+                    <div class="measurement-products">
+                        <label class="measurement-products__all">
+                            <input type="checkbox" id="wizard-product-all" data-product-select-all>
+                            <span>{{ __('site.service_request.all_products') }}</span>
+                        </label>
+                        <div class="measurement-products__list">
+                            @foreach($measurementProducts as $product)
+                                <label class="measurement-products__item">
+                                    <input
+                                        type="checkbox"
+                                        name="product_ids[]"
+                                        value="{{ $product->id }}"
+                                        data-product-name="{{ $product->getTranslation('title', $locale) }}"
+                                    >
+                                    <span>{{ $product->getTranslation('title', $locale) }}</span>
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
 
                 <div class="service-wizard__field">

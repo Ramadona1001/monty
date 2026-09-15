@@ -1262,6 +1262,32 @@ body.service-wizard-open {
   border-color: var(--brand-primary, #f8aa27);
 }
 
+.product-category-section + .product-category-section {
+  margin-top: 3rem;
+  padding-top: 3rem;
+  border-top: 1px solid #eee;
+}
+
+.product-category-section__title {
+  margin: 0 0 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #222;
+  position: relative;
+  padding-bottom: 0.75rem;
+}
+
+.product-category-section__title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 64px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--brand-primary, #f8aa27);
+}
+
 .product-card {
   width: 100%;
   background: #fff;
@@ -1310,6 +1336,17 @@ body.service-wizard-open {
   margin: 0;
   font-size: 1rem;
   font-weight: 700;
+}
+
+.product-card__category {
+  display: inline-block;
+  margin-top: 0.35rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--brand-primary, #f8aa27) 15%, #fff);
+  color: #555;
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .product-card__excerpt {
@@ -1381,6 +1418,55 @@ body.service-wizard-open {
 
 .hero__buttons .btn i {
   margin-inline-end: 0.35rem;
+}
+
+.measurement-products__all {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.75rem;
+  border: 2px solid var(--brand-primary, #f8aa27);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--brand-primary, #f8aa27) 10%, #fff);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.measurement-products__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.measurement-products__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.measurement-products__item:has(input:checked) {
+  border-color: var(--brand-primary, #f8aa27);
+  background: color-mix(in srgb, var(--brand-primary, #f8aa27) 8%, #fff);
+}
+
+.measurement-products__item input {
+  margin-top: 0.15rem;
+  flex-shrink: 0;
+}
+
+@media (min-width: 576px) {
+  .measurement-products__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (min-width: 576px) {

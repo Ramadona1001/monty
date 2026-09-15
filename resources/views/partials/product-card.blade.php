@@ -10,6 +10,9 @@
     </div>
     <div class="product-card__body">
         <h5 class="product-card__title">{{ $product->getTranslation('title', $locale) }}</h5>
+        @if(($showCategory ?? true) && $product->category)
+            <span class="product-card__category">{{ $product->category->getTranslation('name', $locale) }}</span>
+        @endif
         @if($product->getTranslation('excerpt', $locale, false))
             <p class="product-card__excerpt">{{ $product->getTranslation('excerpt', $locale) }}</p>
         @endif

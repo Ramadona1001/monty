@@ -10,6 +10,7 @@ use App\Models\HeroSlide;
 use App\Models\MenuItem;
 use App\Models\Page;
 use App\Models\Product;
+use App\Models\ProductCategory;
 use App\Models\Service;
 use App\Models\ServiceRequestType;
 use App\Models\SocialLink;
@@ -146,6 +147,7 @@ class FrontendContentService
     public function products(): Collection
     {
         return Product::query()
+            ->with('category')
             ->where('is_active', true)
             ->orderBy('sort_order')
             ->get();
@@ -154,6 +156,7 @@ class FrontendContentService
     public function measurementProducts(): Collection
     {
         return Product::query()
+            ->with('category')
             ->where('is_active', true)
             ->orderBy('sort_order')
             ->limit(10)
@@ -163,10 +166,30 @@ class FrontendContentService
     public function productsPaginated(int $perPage = 12): LengthAwarePaginator
     {
         return Product::query()
+            ->with('category')
             ->where('is_active', true)
             ->orderBy('sort_order')
             ->paginate($perPage)
             ->withQueryString();
+    }
+
+    public function productCategoriesWithProducts(): Collection
+    {
+        return ProductCategory::query()
+            ->with(['products' => fn ($query) => $query->where('is_active', true)->orderBy('sort_order')])
+            ->where('is_active', true)
+            ->orderBy('sort_order')
+            ->get()
+            ->filter(fn (ProductCategory $category) => $category->products->isNotEmpty());
+    }
+
+    public function uncategorizedProducts(): Collection
+    {
+        return Product::query()
+            ->where('is_active', true)
+            ->whereNull('product_category_id')
+            ->orderBy('sort_order')
+            ->get();
     }
 
     public function clearCache(): void

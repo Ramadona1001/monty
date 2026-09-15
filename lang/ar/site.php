@@ -24,6 +24,7 @@ return [
     ],
     'products' => [
         'empty' => 'لا توجد منتجات حالياً.',
+        'uncategorized' => 'منتجات أخرى',
     ],
     'shop' => [
         'button' => 'تسوق هنا الآن',
@@ -73,7 +74,7 @@ return [
         'individuals_button' => 'للأفراد',
         'projects_button' => 'للمشاريع',
         'select_product' => 'اختر المنتج',
-        'selected_product' => 'المنتج',
+        'selected_product' => 'المنتجات',
         'all_products' => 'جميع ما سبق',
         'info_notice' => 'سيتم التواصل معك بعد مراجعة الطلب من قبل فريقنا.',
         'next' => 'التالي',

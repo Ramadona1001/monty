@@ -4,26 +4,23 @@ namespace App\Models;
 
 use App\Models\Concerns\ClearsFrontendCache;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Translatable\HasTranslations;
 
-class Product extends Model
+class ProductCategory extends Model
 {
     use ClearsFrontendCache;
     use HasTranslations;
     use SoftDeletes;
 
     /** @var list<string> */
-    public array $translatable = ['title', 'excerpt'];
+    public array $translatable = ['name'];
 
     /** @var list<string> */
     protected $fillable = [
         'slug',
-        'product_category_id',
-        'title',
-        'excerpt',
-        'image',
+        'name',
         'sort_order',
         'is_active',
     ];
@@ -36,8 +33,8 @@ class Product extends Model
         ];
     }
 
-    public function category(): BelongsTo
+    public function products(): HasMany
     {
-        return $this->belongsTo(ProductCategory::class, 'product_category_id');
+        return $this->hasMany(Product::class)->orderBy('sort_order');
     }
 }

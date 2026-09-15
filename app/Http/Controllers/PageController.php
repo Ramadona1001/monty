@@ -43,7 +43,8 @@ class PageController extends Controller
         return view('pages.products', [
             'activeNav' => 'products',
             'page' => $this->content->page('products'),
-            'products' => $this->content->productsPaginated(),
+            'productCategories' => $this->content->productCategoriesWithProducts(),
+            'uncategorizedProducts' => $this->content->uncategorizedProducts(),
         ]);
     }
 
