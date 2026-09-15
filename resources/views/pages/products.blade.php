@@ -16,7 +16,23 @@
 
 @section('content')
     @php
-        $hasProducts = $productCategories->isNotEmpty() || $uncategorizedProducts->isNotEmpty();
+        $productTabs = collect();
+
+        foreach ($productCategories as $category) {
+            $productTabs->push([
+                'id' => 'product-category-'.$category->id,
+                'label' => $category->getTranslation('name', $locale),
+                'products' => $category->products,
+            ]);
+        }
+
+        if ($uncategorizedProducts->isNotEmpty()) {
+            $productTabs->push([
+                'id' => 'product-category-uncategorized',
+                'label' => __('site.products.uncategorized'),
+                'products' => $uncategorizedProducts,
+            ]);
+        }
     @endphp
 
     <section class="products-section py-5">
@@ -25,35 +41,54 @@
                 <p class="text-center mb-4">{{ $page->getTranslation('seo_description', $locale) }}</p>
             @endif
 
-            @if($hasProducts)
-                @foreach($productCategories as $category)
-                    <div class="product-category-section">
-                        <h2 class="product-category-section__title">{{ $category->getTranslation('name', $locale) }}</h2>
-                        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
-                            @foreach($category->products as $product)
-                                <div class="col d-flex">
-                                    @include('partials.product-card', ['product' => $product, 'showCategory' => false])
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                @endforeach
+            @if($productTabs->isNotEmpty())
+                <div class="product-category-tabs">
+                    <ul class="nav product-category-tabs__nav" id="productCategoryTabs" role="tablist">
+                        @foreach($productTabs as $tab)
+                            <li class="nav-item" role="presentation">
+                                <button
+                                    class="nav-link {{ $loop->first ? 'active' : '' }}"
+                                    id="{{ $tab['id'] }}-tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#{{ $tab['id'] }}"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="{{ $tab['id'] }}"
+                                    aria-selected="{{ $loop->first ? 'true' : 'false' }}"
+                                >
+                                    {{ $tab['label'] }}
+                                </button>
+                            </li>
+                        @endforeach
+                    </ul>
 
-                @if($uncategorizedProducts->isNotEmpty())
-                    <div class="product-category-section">
-                        <h2 class="product-category-section__title">{{ __('site.products.uncategorized') }}</h2>
-                        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
-                            @foreach($uncategorizedProducts as $product)
-                                <div class="col d-flex">
-                                    @include('partials.product-card', ['product' => $product, 'showCategory' => false])
+                    <div class="tab-content product-category-tabs__content" id="productCategoryTabsContent">
+                        @foreach($productTabs as $tab)
+                            <div
+                                class="tab-pane fade {{ $loop->first ? 'show active' : '' }}"
+                                id="{{ $tab['id'] }}"
+                                role="tabpanel"
+                                aria-labelledby="{{ $tab['id'] }}-tab"
+                                tabindex="0"
+                            >
+                                <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
+                                    @foreach($tab['products'] as $product)
+                                        <div class="col d-flex">
+                                            @include('partials.product-card', ['product' => $product, 'showCategory' => false])
+                                        </div>
+                                    @endforeach
                                 </div>
-                            @endforeach
-                        </div>
+                            </div>
+                        @endforeach
                     </div>
-                @endif
+                </div>
             @else
                 <p class="text-center text-muted">{{ __('site.products.empty') }}</p>
             @endif
         </div>
     </section>
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('js/site/products-tabs.js') }}"></script>
+@endpush
