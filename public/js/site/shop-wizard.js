@@ -16,7 +16,8 @@
   const productIdInput = wizard.querySelector("#shop-product-id");
   const summaryProduct = wizard.querySelector("[data-shop-summary-product]");
   const galleryContainer = wizard.querySelector("[data-shop-gallery]");
-  const galleryTitle = wizard.querySelector("[data-shop-gallery-title]");
+  const selectedBadges = wizard.querySelectorAll("[data-shop-selected-badge]");
+  const progressFill = wizard.querySelector("[data-shop-progress-fill]");
   const productSelectButtons = wizard.querySelectorAll("[data-shop-select-product]");
 
   let currentStep = 1;
@@ -55,6 +56,17 @@
     if (summaryProduct && selectedProduct) {
       summaryProduct.textContent = selectedProduct.title || "—";
     }
+
+    selectedBadges.forEach((badge) => {
+      if (!selectedProduct) {
+        badge.hidden = true;
+        badge.textContent = "";
+        return;
+      }
+
+      badge.hidden = false;
+      badge.textContent = selectedProduct.title;
+    });
   }
 
   function renderGallery() {
@@ -62,10 +74,6 @@
 
     const images = selectedProduct.images || [];
     galleryContainer.innerHTML = "";
-
-    if (galleryTitle) {
-      galleryTitle.textContent = selectedProduct.title;
-    }
 
     if (!images.length) {
       galleryContainer.hidden = false;
@@ -190,7 +198,12 @@
     if (submitBtn) submitBtn.hidden = step !== 3 || isSuccess;
     if (homeBtn) homeBtn.hidden = !isSuccess;
 
-    wizard.querySelector(".service-wizard__steps")?.classList.toggle("is-hidden", isSuccess);
+    wizard.querySelector(".shop-wizard__steps")?.classList.toggle("is-hidden", isSuccess);
+    wizard.querySelector(".shop-wizard__progress")?.classList.toggle("is-hidden", isSuccess);
+
+    if (progressFill && typeof step === "number") {
+      progressFill.style.width = `${((step - 1) / 2) * 100}%`;
+    }
   }
 
   function validateStep(step) {
