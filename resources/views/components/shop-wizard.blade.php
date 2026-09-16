@@ -103,25 +103,25 @@
                 </div>
 
                 <div class="shop-wizard__catalog">
-                    <div class="shop-wizard__catalog-side">
+                    <div class="shop-wizard__categories-wrap">
                         <p class="shop-wizard__section-label">{{ __('site.shop.categories_label') }}</p>
-                        <ul class="nav flex-column shop-wizard__categories" id="shopCategoryTabs" role="tablist">
-                        @foreach($productTabs as $tab)
-                            <li class="nav-item" role="presentation">
-                                <button
-                                    class="nav-link {{ $loop->first ? 'active' : '' }}"
-                                    id="{{ $tab['id'] }}-tab"
-                                    data-bs-toggle="tab"
-                                    data-bs-target="#{{ $tab['id'] }}"
-                                    type="button"
-                                    role="tab"
-                                    aria-controls="{{ $tab['id'] }}"
-                                    aria-selected="{{ $loop->first ? 'true' : 'false' }}"
-                                >
-                                    {{ $tab['label'] }}
-                                </button>
-                            </li>
-                        @endforeach
+                        <ul class="nav shop-wizard__categories" id="shopCategoryTabs" role="tablist">
+                            @foreach($productTabs as $tab)
+                                <li class="nav-item" role="presentation">
+                                    <button
+                                        class="nav-link {{ $loop->first ? 'active' : '' }}"
+                                        id="{{ $tab['id'] }}-tab"
+                                        data-bs-toggle="tab"
+                                        data-bs-target="#{{ $tab['id'] }}"
+                                        type="button"
+                                        role="tab"
+                                        aria-controls="{{ $tab['id'] }}"
+                                        aria-selected="{{ $loop->first ? 'true' : 'false' }}"
+                                    >
+                                        {{ $tab['label'] }}
+                                    </button>
+                                </li>
+                            @endforeach
                         </ul>
                     </div>
 

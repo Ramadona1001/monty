@@ -272,6 +272,19 @@
     resetWizard();
   }
 
+  const categoryTabs = document.getElementById("shopCategoryTabs");
+
+  categoryTabs?.addEventListener("shown.bs.tab", (event) => {
+    const activeTab = event.target;
+    if (!activeTab || typeof activeTab.scrollIntoView !== "function") return;
+
+    activeTab.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+      inline: "center",
+    });
+  });
+
   openButtons.forEach((button) => {
     button.addEventListener("click", openWizard);
   });
