@@ -1,6 +1,42 @@
 @props([
-    'products',
+    'productCategories',
+    'uncategorizedProducts',
 ])
+
+@php
+    $productTabs = collect();
+
+    foreach ($productCategories as $category) {
+        $productTabs->push([
+            'id' => 'shop-category-'.$category->id,
+            'label' => $category->getTranslation('name', $locale),
+            'products' => $category->products,
+        ]);
+    }
+
+    if ($uncategorizedProducts->isNotEmpty()) {
+        $productTabs->push([
+            'id' => 'shop-category-uncategorized',
+            'label' => __('site.products.uncategorized'),
+            'products' => $uncategorizedProducts,
+        ]);
+    }
+
+    $shopProductsData = collect();
+
+    foreach ($productTabs as $tab) {
+        foreach ($tab['products'] as $product) {
+            $shopProductsData->put($product->id, [
+                'id' => $product->id,
+                'title' => $product->getTranslation('title', $locale),
+                'images' => collect($product->galleryImagePaths())
+                    ->map(fn (string $path) => asset($path))
+                    ->values()
+                    ->all(),
+            ]);
+        }
+    }
+@endphp
 
 <div
     class="service-wizard shop-wizard"
@@ -10,7 +46,10 @@
     data-submit-url="{{ route('shop-request.store', ['locale' => $locale]) }}"
     data-validation="{{ __('site.shop.validation') }}"
     data-error="{{ __('site.shop.error') }}"
+    data-no-images="{{ __('site.shop.no_images') }}"
 >
+    <script type="application/json" id="shop-products-data">@json($shopProductsData)</script>
+
     <div class="service-wizard__overlay" data-shop-close></div>
 
     <div class="service-wizard__panel" role="dialog" aria-modal="true" aria-labelledby="shop-wizard-title">
@@ -31,6 +70,11 @@
                 <div class="service-wizard__step-line"></div>
                 <div class="service-wizard__step" data-shop-step-indicator="2">
                     <span class="service-wizard__step-num">2</span>
+                    <span class="service-wizard__step-label">{{ __('site.shop.step_gallery') }}</span>
+                </div>
+                <div class="service-wizard__step-line"></div>
+                <div class="service-wizard__step" data-shop-step-indicator="3">
+                    <span class="service-wizard__step-num">3</span>
                     <span class="service-wizard__step-label">{{ __('site.shop.step_details') }}</span>
                 </div>
             </div>
@@ -38,35 +82,79 @@
 
         <form class="service-wizard__body" id="shop-request-form" novalidate>
             @csrf
+            <input type="hidden" name="product_id" id="shop-product-id" value="">
 
             <div class="service-wizard__screen is-active" data-shop-step="1">
                 <h2 class="service-wizard__title" id="shop-wizard-title">{{ __('site.shop.step_product_title') }}</h2>
                 <p class="service-wizard__hint">{{ __('site.shop.step_product_hint') }}</p>
 
-                <div class="shop-wizard__products">
-                    @foreach($products as $product)
-                        <label class="shop-wizard__product">
-                            <input
-                                type="radio"
-                                name="product_id"
-                                value="{{ $product->id }}"
-                                data-product-name="{{ $product->getTranslation('title', $locale) }}"
-                                required
+                <div class="shop-wizard__catalog">
+                    <ul class="nav flex-column shop-wizard__categories" id="shopCategoryTabs" role="tablist">
+                        @foreach($productTabs as $tab)
+                            <li class="nav-item" role="presentation">
+                                <button
+                                    class="nav-link {{ $loop->first ? 'active' : '' }}"
+                                    id="{{ $tab['id'] }}-tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#{{ $tab['id'] }}"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="{{ $tab['id'] }}"
+                                    aria-selected="{{ $loop->first ? 'true' : 'false' }}"
+                                >
+                                    {{ $tab['label'] }}
+                                </button>
+                            </li>
+                        @endforeach
+                    </ul>
+
+                    <div class="tab-content shop-wizard__category-panels" id="shopCategoryTabsContent">
+                        @foreach($productTabs as $tab)
+                            <div
+                                class="tab-pane fade {{ $loop->first ? 'show active' : '' }}"
+                                id="{{ $tab['id'] }}"
+                                role="tabpanel"
+                                aria-labelledby="{{ $tab['id'] }}-tab"
+                                tabindex="0"
                             >
-                            <span class="shop-wizard__product-inner">
-                                @if($product->image)
-                                    <span class="shop-wizard__product-image">
-                                        <img src="{{ asset($product->image) }}" alt="{{ $product->getTranslation('title', $locale) }}" loading="lazy">
-                                    </span>
-                                @endif
-                                <span class="shop-wizard__product-title">{{ $product->getTranslation('title', $locale) }}</span>
-                            </span>
-                        </label>
-                    @endforeach
+                                <div class="shop-wizard__products">
+                                    @foreach($tab['products'] as $product)
+                                        <button
+                                            type="button"
+                                            class="shop-wizard__product"
+                                            data-shop-select-product
+                                            data-product-id="{{ $product->id }}"
+                                            data-product-name="{{ $product->getTranslation('title', $locale) }}"
+                                        >
+                                            <span class="shop-wizard__product-inner">
+                                                @if($product->image)
+                                                    <span class="shop-wizard__product-image">
+                                                        <img src="{{ asset($product->image) }}" alt="{{ $product->getTranslation('title', $locale) }}" loading="lazy">
+                                                    </span>
+                                                @else
+                                                    <span class="shop-wizard__product-image shop-wizard__product-image--placeholder">
+                                                        <i class="fa-solid fa-cube"></i>
+                                                    </span>
+                                                @endif
+                                                <span class="shop-wizard__product-title">{{ $product->getTranslation('title', $locale) }}</span>
+                                            </span>
+                                        </button>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
             </div>
 
             <div class="service-wizard__screen" data-shop-step="2">
+                <h2 class="service-wizard__title" data-shop-gallery-title>{{ __('site.shop.step_gallery_title') }}</h2>
+                <p class="service-wizard__hint">{{ __('site.shop.step_gallery_hint') }}</p>
+
+                <div class="shop-wizard__gallery" data-shop-gallery hidden></div>
+            </div>
+
+            <div class="service-wizard__screen" data-shop-step="3">
                 <h2 class="service-wizard__title">{{ __('site.shop.step_details_title') }}</h2>
                 <p class="service-wizard__hint">{{ __('site.shop.step_details_hint') }}</p>
 
@@ -107,7 +195,7 @@
                 <button type="button" class="service-wizard__btn service-wizard__btn--ghost" data-shop-prev hidden>
                     {{ __('site.service_request.previous') }}
                 </button>
-                <button type="button" class="service-wizard__btn service-wizard__btn--primary" data-shop-next>
+                <button type="button" class="service-wizard__btn service-wizard__btn--primary" data-shop-next hidden>
                     {{ __('site.service_request.next') }}
                 </button>
                 <button type="submit" class="service-wizard__btn service-wizard__btn--primary" data-shop-submit hidden>

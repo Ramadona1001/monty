@@ -147,10 +147,15 @@ class FrontendContentService
     public function products(): Collection
     {
         return Product::query()
-            ->with('category')
+            ->with(['category', 'images'])
             ->where('is_active', true)
             ->orderBy('sort_order')
             ->get();
+    }
+
+    public function hasShopProducts(): bool
+    {
+        return Product::query()->where('is_active', true)->exists();
     }
 
     public function measurementProducts(): Collection
@@ -176,7 +181,7 @@ class FrontendContentService
     public function productCategoriesWithProducts(): Collection
     {
         return ProductCategory::query()
-            ->with(['products' => fn ($query) => $query->where('is_active', true)->orderBy('sort_order')])
+            ->with(['products' => fn ($query) => $query->where('is_active', true)->with('images')->orderBy('sort_order')])
             ->where('is_active', true)
             ->orderBy('sort_order')
             ->get()
@@ -186,6 +191,7 @@ class FrontendContentService
     public function uncategorizedProducts(): Collection
     {
         return Product::query()
+            ->with('images')
             ->where('is_active', true)
             ->whereNull('product_category_id')
             ->orderBy('sort_order')

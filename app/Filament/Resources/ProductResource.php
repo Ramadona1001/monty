@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Forms\LocaleFields;
 use App\Filament\Forms\MediaUpload;
 use App\Filament\Resources\ProductResource\Pages;
+use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use Filament\Forms;
@@ -88,6 +89,13 @@ class ProductResource extends Resource
             ->filters([Tables\Filters\TrashedFilter::make()])
             ->actions([Tables\Actions\EditAction::make()])
             ->bulkActions([Tables\Actions\DeleteBulkAction::make()]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\ImagesRelationManager::class,
+        ];
     }
 
     public static function getPages(): array

@@ -30,6 +30,9 @@ class SiteComposer
             'menuItems' => $this->content->menuItems(),
             'footerBranches' => $this->content->footerBranches(),
             'socialLinks' => $this->content->socialLinks(),
+            'hasShopProducts' => $this->content->hasShopProducts(),
+            'shopProductCategories' => $this->content->productCategoriesWithProducts(),
+            'shopUncategorizedProducts' => $this->content->uncategorizedProducts(),
         ]);
     }
 

@@ -31,9 +31,19 @@
 
     <x-footer />
 
+    @if($hasShopProducts)
+        <x-shop-wizard
+            :product-categories="$shopProductCategories"
+            :uncategorized-products="$shopUncategorizedProducts"
+        />
+    @endif
+
     @stack('scripts-before')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <script src="{{ asset('js/site/main.js') }}"></script>
+    @if($hasShopProducts)
+        <script src="{{ asset('js/site/shop-wizard.js') }}"></script>
+    @endif
     @stack('scripts')
 </body>
 </html>

@@ -56,23 +56,25 @@
                         <h2>{{ $slide->getTranslation('subtitle', $locale) }}</h2>
                         <h1>{{ $slide->getTranslation('title', $locale) }}</h1>
                         <span>{{ $slide->getTranslation('tagline', $locale) }}</span>
-                        @if($branches->isNotEmpty() && $serviceRequestTypes->isNotEmpty())
-                            <div class="hero__buttons">
-                                <button
-                                    type="button"
-                                    class="btn js-open-service-wizard"
-                                    data-customer-type="individual"
-                                >
-                                    {{ $slide->getTranslation('individuals_button_text', $locale, false) ?: __('site.service_request.individuals_button') }}
-                                </button>
-                                <button
-                                    type="button"
-                                    class="btn js-open-service-wizard"
-                                    data-customer-type="project"
-                                >
-                                    {{ $slide->getTranslation('projects_button_text', $locale, false) ?: __('site.service_request.projects_button') }}
-                                </button>
-                                @if($products->isNotEmpty())
+                        @if(($branches->isNotEmpty() && $serviceRequestTypes->isNotEmpty()) || $hasShopProducts)
+                            <div class="hero__buttons" id="shop">
+                                @if($branches->isNotEmpty() && $serviceRequestTypes->isNotEmpty())
+                                    <button
+                                        type="button"
+                                        class="btn js-open-service-wizard"
+                                        data-customer-type="individual"
+                                    >
+                                        {{ $slide->getTranslation('individuals_button_text', $locale, false) ?: __('site.service_request.individuals_button') }}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="btn js-open-service-wizard"
+                                        data-customer-type="project"
+                                    >
+                                        {{ $slide->getTranslation('projects_button_text', $locale, false) ?: __('site.service_request.projects_button') }}
+                                    </button>
+                                @endif
+                                @if($hasShopProducts)
                                     <button type="button" class="btn js-open-shop-wizard">
                                         <i class="fa-solid fa-cart-shopping"></i>
                                         {{ __('site.shop.button') }}
@@ -220,9 +222,6 @@
         />
     @endif
 
-    @if($products->isNotEmpty())
-        <x-shop-wizard :products="$products" />
-    @endif
 @endsection
 
 @push('scripts-before')
@@ -233,5 +232,4 @@
 @push('scripts')
     <script src="{{ asset('js/site/' . ($isRtl ? 'owl.carousel-rtl.js' : 'owl.carousel-ltr.js')) }}"></script>
     <script src="{{ asset('js/site/service-request-wizard.js') }}"></script>
-    <script src="{{ asset('js/site/shop-wizard.js') }}"></script>
 @endpush
