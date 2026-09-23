@@ -2,19 +2,14 @@
   const wizard = document.getElementById("shop-wizard");
   if (!wizard) return;
 
-  const form = document.getElementById("shop-request-form");
   const productsDataElement = document.getElementById("shop-products-data");
   const openButtons = document.querySelectorAll(".js-open-shop-wizard");
   const closeTriggers = wizard.querySelectorAll("[data-shop-close]");
   const stepScreens = wizard.querySelectorAll("[data-shop-step]");
   const stepIndicators = wizard.querySelectorAll("[data-shop-step-indicator]");
   const prevBtn = wizard.querySelector("[data-shop-prev]");
-  const nextBtn = wizard.querySelector("[data-shop-next]");
-  const submitBtn = wizard.querySelector("[data-shop-submit]");
-  const homeBtn = wizard.querySelector("[data-shop-home]");
+  const actions = wizard.querySelector("[data-shop-actions]");
   const errorBox = wizard.querySelector("[data-shop-error]");
-  const productIdInput = wizard.querySelector("#shop-product-id");
-  const summaryProduct = wizard.querySelector("[data-shop-summary-product]");
   const galleryContainer = wizard.querySelector("[data-shop-gallery]");
   const selectedBadges = wizard.querySelectorAll("[data-shop-selected-badge]");
   const progressFill = wizard.querySelector("[data-shop-progress-fill]");
@@ -22,22 +17,13 @@
 
   let currentStep = 1;
   let selectedProduct = null;
-  const submitUrl = wizard.dataset.submitUrl;
   const productsData = productsDataElement
     ? JSON.parse(productsDataElement.textContent || "{}")
     : {};
 
   const messages = {
-    validation: wizard.dataset.validation || "Please complete all required fields.",
-    error: wizard.dataset.error || "Something went wrong. Please try again.",
     noImages: wizard.dataset.noImages || "No images available for this product.",
   };
-
-  function showError(message) {
-    if (!errorBox) return;
-    errorBox.textContent = message;
-    errorBox.hidden = false;
-  }
 
   function hideError() {
     if (!errorBox) return;
@@ -52,11 +38,7 @@
     });
   }
 
-  function updateSummary() {
-    if (summaryProduct && selectedProduct) {
-      summaryProduct.textContent = selectedProduct.title || "—";
-    }
-
+  function updateSelectedBadge() {
     selectedBadges.forEach((badge) => {
       if (!selectedProduct) {
         badge.hidden = true;
@@ -74,14 +56,12 @@
 
     const images = selectedProduct.images || [];
     galleryContainer.innerHTML = "";
+    galleryContainer.hidden = false;
 
     if (!images.length) {
-      galleryContainer.hidden = false;
       galleryContainer.innerHTML = `<p class="shop-wizard__gallery-empty">${messages.noImages}</p>`;
       return;
     }
-
-    galleryContainer.hidden = false;
 
     images.forEach((src, index) => {
       const item = document.createElement("button");
@@ -153,10 +133,7 @@
   function selectProduct(productId, productName) {
     const product = productsData[String(productId)] || productsData[productId];
 
-    if (!product) {
-      showError(messages.validation);
-      return;
-    }
+    if (!product) return;
 
     selectedProduct = {
       id: Number(productId),
@@ -164,12 +141,8 @@
       images: product.images || [],
     };
 
-    if (productIdInput) {
-      productIdInput.value = String(productId);
-    }
-
     updateProductSelectionUi();
-    updateSummary();
+    updateSelectedBadge();
     renderGallery();
     hideError();
     setStep(2);
@@ -180,8 +153,7 @@
     hideError();
 
     stepScreens.forEach((screen) => {
-      const screenStep = screen.dataset.shopStep;
-      screen.classList.toggle("is-active", screenStep === String(step));
+      screen.classList.toggle("is-active", screen.dataset.shopStep === String(step));
     });
 
     stepIndicators.forEach((indicator) => {
@@ -190,62 +162,16 @@
       indicator.classList.toggle("is-complete", indicatorStep < step);
     });
 
-    const isSuccess = step === "success";
-    wizard.classList.toggle("is-success", isSuccess);
+    if (prevBtn) prevBtn.hidden = step <= 1;
+    if (actions) actions.hidden = step <= 1;
 
-    if (prevBtn) prevBtn.hidden = step <= 1 || isSuccess;
-    if (nextBtn) nextBtn.hidden = step !== 2 || isSuccess;
-    if (submitBtn) submitBtn.hidden = step !== 3 || isSuccess;
-    if (homeBtn) homeBtn.hidden = !isSuccess;
-
-    wizard.querySelector(".shop-wizard__steps")?.classList.toggle("is-hidden", isSuccess);
-    wizard.querySelector(".shop-wizard__progress")?.classList.toggle("is-hidden", isSuccess);
-
-    if (progressFill && typeof step === "number") {
-      progressFill.style.width = `${((step - 1) / 2) * 100}%`;
+    if (progressFill) {
+      progressFill.style.width = step <= 1 ? "0%" : "100%";
     }
-  }
-
-  function validateStep(step) {
-    if (step === 1) {
-      if (!selectedProduct) {
-        showError(messages.validation);
-        return false;
-      }
-    }
-
-    if (step === 3) {
-      const nameInput = wizard.querySelector("#shop-customer-name");
-      const phoneInput = wizard.querySelector("#shop-phone");
-
-      if (!nameInput?.value.trim()) {
-        nameInput?.focus();
-        showError(messages.validation);
-        return false;
-      }
-
-      if (!phoneInput?.value.trim()) {
-        phoneInput?.focus();
-        showError(messages.validation);
-        return false;
-      }
-
-      if (!selectedProduct || !productIdInput?.value) {
-        showError(messages.validation);
-        return false;
-      }
-    }
-
-    hideError();
-    return true;
   }
 
   function resetWizard() {
     selectedProduct = null;
-
-    if (productIdInput) {
-      productIdInput.value = "";
-    }
 
     if (galleryContainer) {
       galleryContainer.innerHTML = "";
@@ -253,7 +179,7 @@
     }
 
     updateProductSelectionUi();
-    form?.reset();
+    updateSelectedBadge();
     setStep(1);
     hideError();
   }
@@ -299,55 +225,10 @@
     }
   });
 
-  nextBtn?.addEventListener("click", () => {
-    if (currentStep === 2) {
-      setStep(3);
-    }
-  });
-
   productSelectButtons.forEach((button) => {
     button.addEventListener("click", () => {
       selectProduct(button.dataset.productId, button.dataset.productName);
     });
-  });
-
-  form?.addEventListener("submit", async (event) => {
-    event.preventDefault();
-
-    if (!validateStep(3)) return;
-
-    hideError();
-    submitBtn.disabled = true;
-
-    const formData = new FormData(form);
-
-    try {
-      const response = await fetch(submitUrl, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "X-Requested-With": "XMLHttpRequest",
-        },
-        body: formData,
-      });
-
-      if (!response.ok) {
-        const payload = await response.json().catch(() => ({}));
-        const firstError = payload.errors ? Object.values(payload.errors).flat()[0] : null;
-        showError(firstError || messages.error);
-        return;
-      }
-
-      setStep("success");
-      form.reset();
-      if (productIdInput && selectedProduct) {
-        productIdInput.value = String(selectedProduct.id);
-      }
-    } catch (error) {
-      showError(messages.error);
-    } finally {
-      submitBtn.disabled = false;
-    }
   });
 
   document.addEventListener("keydown", (event) => {

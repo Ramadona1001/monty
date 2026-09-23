@@ -43,9 +43,6 @@
     id="shop-wizard"
     hidden
     aria-hidden="true"
-    data-submit-url="{{ route('shop-request.store', ['locale' => $locale]) }}"
-    data-validation="{{ __('site.shop.validation') }}"
-    data-error="{{ __('site.shop.error') }}"
     data-no-images="{{ __('site.shop.no_images') }}"
 >
     <script type="application/json" id="shop-products-data">@json($shopProductsData)</script>
@@ -85,16 +82,10 @@
                     <span class="service-wizard__step-num shop-wizard__step-num">2</span>
                     <span class="service-wizard__step-label">{{ __('site.shop.step_gallery') }}</span>
                 </div>
-                <div class="service-wizard__step shop-wizard__step" data-shop-step-indicator="3">
-                    <span class="service-wizard__step-num shop-wizard__step-num">3</span>
-                    <span class="service-wizard__step-label">{{ __('site.shop.step_details') }}</span>
-                </div>
             </div>
         </div>
 
-        <form class="service-wizard__body" id="shop-request-form" novalidate>
-            @csrf
-            <input type="hidden" name="product_id" id="shop-product-id" value="">
+        <div class="service-wizard__body">
 
             <div class="service-wizard__screen shop-wizard__screen is-active" data-shop-step="1">
                 <div class="shop-wizard__screen-head">
@@ -181,61 +172,13 @@
                 <div class="shop-wizard__gallery" data-shop-gallery hidden></div>
             </div>
 
-            <div class="service-wizard__screen shop-wizard__screen" data-shop-step="3">
-                <div class="shop-wizard__screen-head">
-                    <span class="shop-wizard__selected-badge" data-shop-selected-badge hidden></span>
-                    <h2 class="service-wizard__title shop-wizard__title">{{ __('site.shop.step_details_title') }}</h2>
-                    <p class="service-wizard__hint shop-wizard__hint">{{ __('site.shop.step_details_hint') }}</p>
-                </div>
-
-                <div class="service-wizard__summary shop-wizard__summary">
-                    <div class="service-wizard__summary-row">
-                        <span class="service-wizard__summary-label">{{ __('site.shop.selected_product') }}</span>
-                        <span class="service-wizard__summary-value" data-shop-summary-product>—</span>
-                    </div>
-                </div>
-
-                <div class="service-wizard__field">
-                    <label class="service-wizard__label" for="shop-customer-name">{{ __('site.service_request.customer_name') }}</label>
-                    <input class="service-wizard__input" type="text" id="shop-customer-name" name="customer_name" required autocomplete="name">
-                </div>
-
-                <div class="service-wizard__field">
-                    <label class="service-wizard__label" for="shop-phone">{{ __('site.service_request.phone') }}</label>
-                    <input class="service-wizard__input" type="tel" id="shop-phone" name="phone" required autocomplete="tel">
-                </div>
-
-                <div class="service-wizard__field">
-                    <label class="service-wizard__label" for="shop-notes">{{ __('site.service_request.notes') }}</label>
-                    <textarea class="service-wizard__textarea" id="shop-notes" name="notes" rows="4" placeholder="{{ __('site.service_request.notes_placeholder') }}"></textarea>
-                </div>
-            </div>
-
-            <div class="service-wizard__screen service-wizard__screen--success" data-shop-step="success">
-                <div class="service-wizard__success-icon">
-                    <i class="fa-solid fa-check"></i>
-                </div>
-                <h2 class="service-wizard__title">{{ __('site.shop.success_title') }}</h2>
-                <p class="service-wizard__hint">{{ __('site.shop.success_message') }}</p>
-            </div>
-
             <div class="service-wizard__error shop-wizard__error" data-shop-error hidden></div>
 
             <div class="service-wizard__actions shop-wizard__actions" data-shop-actions>
                 <button type="button" class="service-wizard__btn service-wizard__btn--ghost" data-shop-prev hidden>
                     {{ __('site.service_request.previous') }}
                 </button>
-                <button type="button" class="service-wizard__btn service-wizard__btn--primary" data-shop-next hidden>
-                    {{ __('site.service_request.next') }}
-                </button>
-                <button type="submit" class="service-wizard__btn service-wizard__btn--primary" data-shop-submit hidden>
-                    <i class="fa-solid fa-paper-plane"></i>
-                    {{ __('site.shop.confirm') }}
-                </button>
-                <a href="{{ route('home', ['locale' => $locale]) }}" class="service-wizard__btn service-wizard__btn--primary" data-shop-home hidden>
-                    {{ __('site.service_request.back_home') }}
-                </a>
             </div>
-        </form>
+        </div>
     </div>
 </div>
